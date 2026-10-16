@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Panel Admin - LYPPE STORE</title>
+<link rel="icon" type="image/jpeg" href="https://cdn.nekohime.site/file/kn56xjkz.jpeg">
+<link rel="apple-touch-icon" href="https://cdn.nekohime.site/file/kn56xjkz.jpeg">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  html,body{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%;overscroll-behavior:none}
+  *{-webkit-tap-highlight-color:transparent}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;min-height:100vh;background:#f5f7ff;background-image:radial-gradient(ellipse at 8% 0%,rgba(99,102,241,.14),transparent 38%),radial-gradient(ellipse at 100% 12%,rgba(14,165,233,.10),transparent 34%);color:#172033;padding:12px}
+  .glass{background:rgba(255,255,255,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(226,232,240,.9);box-shadow:0 12px 34px rgba(30,41,59,.055)}
+  .glass-strong{background:rgba(255,255,255,.98);backdrop-filter:blur(20px);border:1px solid rgba(226,232,240,.9);box-shadow:0 12px 40px rgba(15,23,42,.12)}
+  .btn-gray{background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff;border:1px solid transparent;box-shadow:0 5px 14px rgba(79,70,229,.16);transition:all .2s;border-radius:12px}
+  .btn-gray:hover{filter:brightness(1.06)}.btn-gray:active{transform:scale(.97)}
+  .btn-primary{background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff;border:1px solid transparent;box-shadow:0 5px 14px rgba(79,70,229,.16);transition:all .2s;border-radius:12px}
+  .btn-icon{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;transition:all .2s;border-radius:12px}
+  .btn-icon:hover{background:#e0e7ff;color:#4338ca}.btn-icon:active{transform:scale(.95)}
+  .tab-btn{border:1px solid #e2e8f0;background:rgba(255,255,255,.82);box-shadow:0 3px 10px rgba(15,23,42,.03);transition:all .2s;border-radius:12px;color:#334155}
+  .tab-btn.active{color:#fff;background:linear-gradient(135deg,#4338ca,#7c3aed);border-color:transparent;box-shadow:0 8px 18px rgba(79,70,229,.2)}
+  input,textarea,select{font-size:16px;transition:all .2s;background:#f8fafc;border-color:#e2e8f0;border-radius:14px}
+  input:focus,textarea:focus,select:focus{background:#fff;border-color:#818cf8!important;box-shadow:0 0 0 4px rgba(99,102,241,.12);outline:none}
+  .item-card{transition:all .2s;background:#fff;border:1px solid #e8edf5;border-radius:18px;box-shadow:0 4px 12px rgba(15,23,42,.025)}
+  .item-card:hover{border-color:#c7d2fe;box-shadow:0 8px 20px rgba(79,70,229,.07)}
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(15,23,42,.95);backdrop-filter:blur(10px);color:#fff;padding:14px 24px;border-radius:14px;z-index:9999;opacity:0;transition:all .35s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;font-size:14px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.3);max-width:90vw;text-align:center}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  #autosaveIndicator{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-100px);background:#059669;backdrop-filter:blur(10px);color:#fff;padding:10px 18px;border-radius:999px;z-index:9999;font-size:13px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.2);transition:all .35s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;opacity:0}
+  #autosaveIndicator.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  #autosaveIndicator.error{background:#dc2626}
+  #autosaveIndicator.saving{background:#f59e0b}
+  .modal-overlay{background:rgba(15,23,42,.55);backdrop-filter:blur(6px);animation:fadeIn .2s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .modal-overlay>div{animation:slideUp .25s ease}
+  .upload-box{transition:all .2s;background:#f8faff;border-color:#c7d2fe;border-radius:18px}
+  .upload-box:hover{background:#eef2ff;border-color:#818cf8}
+  .input-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:14px;pointer-events:none;font-weight:500}
+  .variant-row{background:#f8faff;border:1px solid #e0e7ff;border-radius:12px;padding:10px;margin-bottom:8px}
+  .variant-input{padding:8px 10px!important;border-radius:8px!important;font-size:14px!important;background:rgba(255,255,255,.9)!important;border:1px solid #e2e8f0!important}
+  .status-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap;flex-shrink:0}
+  .status-tersedia{background:#dcfce7;color:#166534}
+  .status-habis{background:#fee2e2;color:#991b1b}
+  .status-po{background:#fef3c7;color:#92400e}
+  #previewImg{width:100%!important;height:100%!important;min-height:190px;object-fit:cover!important;padding:0!important;border-radius:14px!important}
+  #rPreviewImg{width:100%!important;max-height:260px;object-fit:cover!important}
+  #loadingScreen{position:fixed;inset:0;background:linear-gradient(135deg,#eef2ff,#f8fafc);display:flex;align-items:center;justify-content:center;z-index:99999;flex-direction:column;gap:16px}
+  #loadingScreen.hidden{display:none}
+  .glass.rounded-3xl:first-child{color:white;background:linear-gradient(125deg,#312e81 0%,#4f46e5 52%,#7c3aed 100%)!important;border:0!important;box-shadow:0 18px 38px rgba(79,70,229,.22)!important;position:relative;overflow:hidden}
+  .glass.rounded-3xl:first-child:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-70px;top:-95px;background:rgba(255,255,255,.09);pointer-events:none}
+  .glass.rounded-3xl:first-child h1,.glass.rounded-3xl:first-child p{color:white!important}
+  .glass.rounded-3xl:first-child .btn-gray{color:#fff!important;background:rgba(255,255,255,.13)!important;border:1px solid rgba(255,255,255,.22)!important;box-shadow:none!important}
+  .glass.rounded-3xl:first-child .btn-gray:hover{background:rgba(255,255,255,.23)!important}
+  @media(max-width:640px){body{padding:12px!important}.glass.rounded-3xl:first-child{padding:18px!important;border-radius:24px!important}.tab-btn{padding:10px 13px!important}}
+</style>
+</head>
+<body class="p-3 md:p-8">
+
+<div id="loadingScreen">
+  <div class="w-16 h-16 rounded-2xl bg-indigo-500 flex items-center justify-center text-white text-2xl shadow-lg">
+    <i class="fas fa-cog fa-spin"></i>
+  </div>
+  <p class="text-slate-600 font-semibold">Memuat data...</p>
+</div>
+
+<div id="toast"></div>
+<div id="autosaveIndicator"><i class="fas fa-check-circle"></i> Tersimpan otomatis</div>
+
+<div class="max-w-4xl mx-auto relative z-10">
+
+  <div class="glass rounded-3xl p-5 mb-4">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl overflow-hidden shadow-lg border-2 border-white bg-white flex items-center justify-center">
+          <img src="https://cdn.nekohime.site/file/kn56xjkz.jpeg" alt="LYPPE STORE" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-slate-800">LYPPE STORE</h1>
+          <p class="text-slate-500 text-xs" id="saveInfo">Auto-save ke GitHub</p>
+        </div>
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <button onclick="openGhSettings()" class="btn-gray px-3 py-2 rounded-xl font-semibold text-xs"><i class="fas fa-cog"></i> GitHub</button>
+        <button onclick="preview()" class="btn-gray px-3 py-2 rounded-xl font-semibold text-xs"><i class="fas fa-eye"></i> Preview</button>
+        <button onclick="exportData()" class="btn-gray px-3 py-2 rounded-xl font-semibold text-xs"><i class="fas fa-file-export"></i> Export</button>
+        <button onclick="document.getElementById('importFile').click()" class="btn-gray px-3 py-2 rounded-xl font-semibold text-xs"><i class="fas fa-file-import"></i> Import</button>
+        <button onclick="resetAll()" class="btn-gray px-3 py-2 rounded-xl font-semibold text-xs"><i class="fas fa-trash"></i> Reset</button>
+        <input type="file" id="importFile" accept=".json" class="hidden" onchange="importData(event)">
+      </div>
+    </div>
+  </div>
+
+  <section id="quickOverview" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+    <div class="glass rounded-2xl p-4">
+      <div class="flex items-center justify-between gap-2"><span class="text-xs font-semibold text-slate-500">Produk</span><span class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center"><i class="fas fa-box"></i></span></div>
+      <p id="overviewProducts" class="text-2xl font-extrabold text-slate-800 mt-2">0</p><p class="text-[11px] text-slate-400 mt-1">Total produk</p>
+    </div>
+    <div class="glass rounded-2xl p-4">
+      <div class="flex items-center justify-between gap-2"><span class="text-xs font-semibold text-slate-500">Kategori</span><span class="w-9 h-9 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center"><i class="fas fa-tags"></i></span></div>
+      <p id="overviewCategories" class="text-2xl font-extrabold text-slate-800 mt-2">0</p><p class="text-[11px] text-slate-400 mt-1">Kelompok produk</p>
+    </div>
+    <div class="glass rounded-2xl p-4">
+      <div class="flex items-center justify-between gap-2"><span class="text-xs font-semibold text-slate-500">Review</span><span class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"><i class="fas fa-star"></i></span></div>
+      <p id="overviewReviews" class="text-2xl font-extrabold text-slate-800 mt-2">0</p><p class="text-[11px] text-slate-400 mt-1">Testimoni pembeli</p>
+    </div>
+    <div class="glass rounded-2xl p-4">
+      <div class="flex items-center justify-between gap-2"><span class="text-xs font-semibold text-slate-500">Tersedia</span><span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fas fa-check-circle"></i></span></div>
+      <p id="overviewAvailable" class="text-2xl font-extrabold text-slate-800 mt-2">0</p><p class="text-[11px] text-slate-400 mt-1">Produk siap jual</p>
+    </div>
+  </section>
+
+  <div class="flex gap-2 mb-4 overflow-x-auto pb-1">
+    <button onclick="showTab('profil')" id="tab-profil" class="tab-btn active px-4 py-2.5 font-semibold text-sm whitespace-nowrap"><i class="fas fa-store"></i> Profil</button>
+    <button onclick="showTab('kategori')" id="tab-kategori" class="tab-btn px-4 py-2.5 font-semibold text-sm whitespace-nowrap"><i class="fas fa-tags"></i> Kategori</button>
+    <button onclick="showTab('produk')" id="tab-produk" class="tab-btn px-4 py-2.5 font-semibold text-sm whitespace-nowrap"><i class="fas fa-box"></i> Produk</button>
+    <button onclick="showTab('review')" id="tab-review" class="tab-btn px-4 py-2.5 font-semibold text-sm whitespace-nowrap"><i class="fas fa-star"></i> Review</button>
+  </div>
+
+  <!-- TAB PROFIL -->
+  <div id="tabContent-profil" class="glass rounded-3xl p-5">
+    <div class="flex items-center gap-3 mb-5">
+      <div class="w-10 h-10 rounded-xl btn-gray flex items-center justify-center text-white shadow-md"><i class="fas fa-store"></i></div>
+      <div><h2 class="font-bold text-slate-800">Profil Website</h2><p class="text-xs text-slate-500">Otomatis tersimpan saat diubah</p></div>
+    </div>
+
+    <label class="block text-sm font-semibold mb-2 text-slate-700">Logo Website</label>
+    <input id="logoFile" type="file" accept="image/*" class="hidden" onchange="uploadLogo(event)">
+    <div id="logoBox" onclick="document.getElementById('logoFile').click()" class="upload-box border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer">
+      <i class="fas fa-image text-3xl text-slate-400 mb-1"></i>
+      <p class="text-sm text-slate-500">Klik pilih logo</p>
+    </div>
+    <div id="logoPreviewBox" class="hidden mt-3 relative w-24 h-24">
+      <img id="logoPreview" class="w-24 h-24 object-cover rounded-full border-4 border-white shadow-lg">
+      <button type="button" onclick="removeLogo()" class="absolute -top-1 -right-1 btn-gray w-7 h-7 rounded-full shadow-lg text-xs text-white"><i class="fas fa-times"></i></button>
+    </div>
+    <input type="hidden" id="cfgLogo">
+
+    <label class="block text-sm font-semibold mb-1 mt-4 text-slate-700">Nama Website</label>
+    <input id="cfgName" oninput="autoSaveProfile()" class="w-full px-4 py-3 border rounded-xl mb-3">
+
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Deskripsi / Bio</label>
+    <textarea id="cfgDesc" rows="2" oninput="autoSaveProfile()" class="w-full px-4 py-3 border rounded-xl mb-3"></textarea>
+
+    <label class="block text-sm font-semibold mb-1 text-slate-700">WhatsApp</label>
+    <input id="cfgWA" oninput="autoSaveProfile()" placeholder="6287776057332" class="w-full px-4 py-3 border rounded-xl mb-3">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div>
+        <label class="block text-sm font-semibold mb-1 text-slate-700">Username TikTok</label>
+        <div class="relative"><span class="input-prefix">@</span><input id="cfgTiktok" oninput="autoSaveProfile()" placeholder="username" class="w-full pl-8 pr-4 py-3 border rounded-xl"></div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold mb-1 text-slate-700">Username Instagram</label>
+        <div class="relative"><span class="input-prefix">@</span><input id="cfgIg" oninput="autoSaveProfile()" placeholder="username" class="w-full pl-8 pr-4 py-3 border rounded-xl"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB KATEGORI -->
+  <div id="tabContent-kategori" class="glass rounded-3xl p-5 hidden">
+    <div class="flex items-center gap-3 mb-5">
+      <div class="w-10 h-10 rounded-xl btn-gray flex items-center justify-center text-white shadow-md"><i class="fas fa-tags"></i></div>
+      <div><h2 class="font-bold text-slate-800">Kategori Produk</h2><p class="text-xs text-slate-500">Kelompokkan produk Anda</p></div>
+    </div>
+    <div class="flex gap-2 mb-3">
+      <input id="newCat" onkeypress="if(event.key==='Enter')addCategory()" placeholder="Nama kategori baru" class="flex-1 px-4 py-3 border rounded-xl">
+      <button onclick="addCategory()" class="btn-gray px-4 py-3 font-semibold text-sm whitespace-nowrap text-white"><i class="fas fa-plus"></i> Tambah</button>
+    </div>
+    <div id="catList" class="mt-3"></div>
+  </div>
+
+  <!-- TAB PRODUK -->
+  <div id="tabContent-produk" class="glass rounded-3xl p-5 hidden">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl btn-gray flex items-center justify-center text-white shadow-md"><i class="fas fa-box"></i></div>
+        <div><h2 class="font-bold text-slate-800">Daftar Produk</h2><p class="text-xs text-slate-500">Kelola produk Anda</p></div>
+      </div>
+      <button onclick="openProduct()" class="btn-gray px-4 py-2.5 font-semibold text-sm text-white"><i class="fas fa-plus"></i> Tambah</button>
+    </div>
+    <div id="listProduk" class="space-y-2"></div>
+  </div>
+
+  <!-- TAB REVIEW -->
+  <div id="tabContent-review" class="glass rounded-3xl p-5 hidden">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl btn-gray flex items-center justify-center text-white shadow-md"><i class="fas fa-star"></i></div>
+        <div><h2 class="font-bold text-slate-800">Daftar Review</h2><p class="text-xs text-slate-500">Testimoni pembeli</p></div>
+      </div>
+      <button onclick="openReview()" class="btn-gray px-4 py-2.5 font-semibold text-sm text-white"><i class="fas fa-plus"></i> Tambah</button>
+    </div>
+    <div id="listReview" class="space-y-2"></div>
+  </div>
+
+</div>
+
+<!-- MODAL PRODUK -->
+<div id="modalProduct" class="hidden fixed inset-0 modal-overlay z-50 flex items-end md:items-center justify-center p-0 md:p-4">
+  <div class="glass-strong rounded-t-3xl md:rounded-3xl p-5 w-full max-w-lg max-h-[92vh] overflow-y-auto">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-10 h-10 rounded-xl btn-gray flex items-center justify-center text-white shadow-md"><i class="fas fa-box"></i></div>
+      <h2 id="productTitle" class="font-bold text-lg text-slate-800">Tambah Produk</h2>
+    </div>
+    <input type="hidden" id="pId">
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Nama Produk *</label>
+    <input id="pName" class="w-full px-4 py-3 border rounded-xl mb-3">
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Kategori</label>
+    <select id="pCategory" class="w-full px-4 py-3 border rounded-xl mb-3"><option value="">-- Tanpa Kategori --</option></select>
+    <label class="block text-sm font-semibold mb-2 text-slate-700">Gambar Produk</label>
+    <input id="pFile" type="file" accept="image/*" class="hidden" onchange="uploadImage(event)">
+    <div id="uploadBox" onclick="document.getElementById('pFile').click()" class="upload-box border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer">
+      <i class="fas fa-cloud-upload-alt text-3xl text-slate-400 mb-1"></i>
+      <p class="text-sm text-slate-500">Klik pilih gambar</p>
+    </div>
+    <div id="previewBox" class="hidden mt-2 relative">
+      <img id="previewImg" class="w-full h-48 object-contain rounded-xl shadow-md bg-slate-50">
+      <button type="button" onclick="removeImg()" class="absolute top-2 right-2 btn-gray w-8 h-8 rounded-full shadow-lg text-white"><i class="fas fa-times"></i></button>
+    </div>
+    <input type="hidden" id="pImg">
+    <label class="block text-sm font-semibold mb-1 mt-3 text-slate-700">Deskripsi</label>
+    <textarea id="pDesc" rows="3" class="w-full px-4 py-3 border rounded-xl mb-3"></textarea>
+    <div class="bg-slate-100/60 border border-slate-200/60 rounded-2xl p-4 mb-3">
+      <div class="flex justify-between items-center mb-3">
+        <div><p class="font-bold text-slate-800 text-sm"><i class="fas fa-layer-group text-slate-500"></i> Varian Produk</p><p class="text-xs text-slate-500">Nama, harga & status</p></div>
+        <button type="button" onclick="addVariant()" class="btn-gray px-3 py-1.5 font-semibold text-xs text-white"><i class="fas fa-plus"></i> Tambah</button>
+      </div>
+      <div id="variantList"></div>
+      <p id="variantEmpty" class="text-xs text-slate-400 italic text-center py-2">Belum ada varian</p>
+    </div>
+    <div class="flex gap-2 mt-5">
+      <button onclick="closeProduct()" class="flex-1 btn-gray py-3.5 font-semibold text-white">Batal</button>
+      <button onclick="saveProduct()" class="flex-1 btn-gray py-3.5 font-semibold text-white">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REVIEW -->
+<div id="modalReview" class="hidden fixed inset-0 modal-overlay z-50 flex items-end md:items-center justify-center p-0 md:p-4">
+  <div class="glass-strong rounded-t-3xl md:rounded-3xl p-5 w-full max-w-md max-h-[92vh] overflow-y-auto">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-10 h-10 rounded-xl btn-gray flex items-center justify-center text-white shadow-md"><i class="fas fa-star"></i></div>
+      <h2 class="font-bold text-lg text-slate-800">Tambah Review</h2>
+    </div>
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Produk *</label>
+    <select id="rProduct" class="w-full px-4 py-3 border rounded-xl mb-3"></select>
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Nama *</label>
+    <input id="rName" class="w-full px-4 py-3 border rounded-xl mb-3">
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Rating *</label>
+    <select id="rRating" class="w-full px-4 py-3 border rounded-xl mb-3">
+      <option value="5">★★★★★ (5)</option><option value="4">★★★★☆ (4)</option><option value="3">★★★☆☆ (3)</option><option value="2">★★☆☆☆ (2)</option><option value="1">★☆☆☆☆ (1)</option>
+    </select>
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Isi Review *</label>
+    <textarea id="rText" rows="3" class="w-full px-4 py-3 border rounded-xl mb-3"></textarea>
+    <label class="block text-sm font-semibold mb-2 text-slate-700">Foto Ulasan (opsional)</label>
+    <input id="rFile" type="file" accept="image/*" class="hidden" onchange="uploadReviewImg(event)">
+    <div id="rUploadBox" onclick="document.getElementById('rFile').click()" class="upload-box border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer">
+      <i class="fas fa-camera text-3xl text-slate-400 mb-1"></i>
+      <p class="text-sm text-slate-500">Klik pilih foto</p>
+    </div>
+    <div id="rPreviewBox" class="hidden mt-2 relative">
+      <img id="rPreviewImg" class="w-full h-40 object-cover rounded-xl shadow-md">
+      <button type="button" onclick="removeReviewImg()" class="absolute top-2 right-2 btn-gray w-8 h-8 rounded-full shadow-lg text-white"><i class="fas fa-times"></i></button>
+    </div>
+    <input type="hidden" id="rImg">
+    <div class="flex gap-2 mt-5">
+      <button onclick="closeReview()" class="flex-1 btn-gray py-3.5 font-semibold text-white">Batal</button>
+      <button onclick="saveReview()" class="flex-1 btn-gray py-3.5 font-semibold text-white">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL GITHUB SETTINGS -->
+<div id="modalGh" class="hidden fixed inset-0 modal-overlay z-[60] flex items-center justify-center p-4">
+  <div class="glass-strong rounded-3xl p-5 w-full max-w-md max-h-[92vh] overflow-y-auto">
+    <h2 class="font-bold text-lg mb-1 text-slate-800"><i class="fas fa-cog"></i> Konfigurasi GitHub</h2>
+    <p class="text-xs text-slate-500 mb-4">Isi sekali aja. Data disimpan di browser kamu.</p>
+
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Personal Access Token</label>
+    <input id="ghToken" type="password" placeholder="github_pat_..." class="w-full px-4 py-3 border rounded-xl mb-1">
+    <p class="text-[11px] text-slate-500 mb-3">Bikin di GitHub → Settings → Developer settings → Fine-grained token. Izin: <b>Contents: Read and write</b>.</p>
+
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Owner (username)</label>
+    <input id="ghOwner" placeholder="budi" class="w-full px-4 py-3 border rounded-xl mb-2">
+
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Repo</label>
+    <input id="ghRepo" placeholder="toko-saya" class="w-full px-4 py-3 border rounded-xl mb-2">
+
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Branch</label>
+    <input id="ghBranch" value="main" class="w-full px-4 py-3 border rounded-xl mb-2">
+
+    <label class="block text-sm font-semibold mb-1 text-slate-700">Path data.json</label>
+    <input id="ghPathData" value="data.json" class="w-full px-4 py-3 border rounded-xl mb-2">
+
+    <label class="block text-sm font-semibold mb-1 text-slate-700">URL Index (untuk tombol Preview)</label>
+    <input id="ghIndexUrl" placeholder="https://budi.github.io/toko-saya/" class="w-full px-4 py-3 border rounded-xl mb-3">
+
+    <div class="flex gap-2">
+      <button onclick="closeGhSettings()" class="flex-1 btn-gray py-3 font-semibold text-white">Batal</button>
+      <button onclick="saveGhSettings()" class="flex-1 btn-gray py-3 font-semibold text-white">Simpan & Load</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================= CONFIG GITHUB =================
+var GH = {
+  token: localStorage.getItem('gh_token') || '',
+  owner: localStorage.getItem('gh_owner') || '',
+  repo: localStorage.getItem('gh_repo') || '',
+  branch: localStorage.getItem('gh_branch') || 'main',
+  pathData: localStorage.getItem('gh_pathData') || 'data.json',
+  indexUrl: localStorage.getItem('gh_indexUrl') || ''
+};
+
+var DEFAULT_LOGO = 'https://cdn.nekohime.site/file/kn56xjkz.jpeg';
+
+var data = {
+  settings: { name:'', wa:'', desc:'', tiktok:'', ig:'', logo:'' },
+  categories: [],
+  products: [],
+  reviews: []
+};
+
+var autosaveTimer = null;
+var saveQueue = false;
+
+// ================= UI HELPERS =================
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.innerText = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+function showAutosave(state, msg) {
+  var el = document.getElementById('autosaveIndicator');
+  el.classList.remove('error','saving');
+  if (state === 'saving') {
+    el.classList.add('saving');
+    el.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan ke GitHub...';
+  } else if (state === 'error') {
+    el.classList.add('error');
+    el.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + (msg || 'Gagal menyimpan');
+  } else {
+    el.innerHTML = '<i class="fas fa-check-circle"></i> Tersimpan otomatis';
+  }
+  el.classList.add('show');
+  clearTimeout(autosaveTimer);
+  if (state !== 'saving') {
+    autosaveTimer = setTimeout(function() { el.classList.remove('show'); }, 2200);
+  }
+}
+
+// ================= GITHUB API =================
+function ghConfigured() {
+  return GH.token && GH.owner && GH.repo;
+}
+
+function ghHeaders() {
+  return {
+    Authorization: 'Bearer ' + GH.token,
+    Accept: 'application/vnd.github+json'
+  };
+}
+
+function ghGetFile(path) {
+  var url = 'https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/' + path + '?ref=' + GH.branch + '&t=' + Date.now();
+  return fetch(url, { headers: ghHeaders() })
+    .then(function(r) {
+      if (r.status === 404) return null;
+      if (!r.ok) return r.json().then(function(e){ throw new Error(e.message || 'Gagal ambil file'); });
+      return r.json();
+    });
+}
+
+function ghPutFile(path, content, message) {
+  var url = 'https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/' + path;
+  return ghGetFile(path).then(function(existing) {
+    var body = {
+      message: message + ' - ' + new Date().toLocaleString('id-ID'),
+      content: btoa(unescape(encodeURIComponent(content))),
+      branch: GH.branch
+    };
+    if (existing && existing.sha) body.sha = existing.sha;
+
+    return fetch(url, {
+      method: 'PUT',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders()),
+      body: JSON.stringify(body)
+    });
+  }).then(function(r) {
+    if (!r.ok) return r.json().then(function(e){ throw new Error(e.message || 'Gagal simpan'); });
+    return r.json();
+  });
+}
+
+// ================= LOAD / SAVE =================
+function dbLoad(callback) {
+  if (!ghConfigured()) {
+    document.getElementById('saveInfo').innerText = '⚠️ GitHub belum dikonfigurasi';
+    callback();
+    return;
+  }
+  document.getElementById('saveInfo').innerText = 'Memuat dari GitHub...';
+  ghGetFile(GH.pathData)
+    .then(function(file) {
+      if (file && file.content) {
+        var raw = decodeURIComponent(escape(atob(file.content.replace(/\n/g, ''))));
+        var parsed = JSON.parse(raw);
+        if (parsed) data = parsed;
+      }
+      normalizeData();
+      document.getElementById('saveInfo').innerText = 'Auto-save ke GitHub';
+      callback();
+    })
+    .catch(function(err) {
+      console.error(err);
+      document.getElementById('saveInfo').innerText = '⚠️ ' + err.message;
+      toast('❌ ' + err.message);
+      normalizeData();
+      callback();
+    });
+}
+
+function normalizeData() {
+  if (!data.settings) data.settings = {};
+  if (!data.settings.logo) data.settings.logo = '';
+  if (!data.settings.tiktok) data.settings.tiktok = '';
+  if (!data.settings.ig) data.settings.ig = '';
+  if (!data.categories) data.categories = [];
+  if (!data.products) data.products = [];
+  if (!data.reviews) data.reviews = [];
+  for (var i = 0; i < data.products.length; i++) {
+    if (!data.products[i].variants) data.products[i].variants = [];
+    if (!data.products[i].categoryId) data.products[i].categoryId = '';
+    for (var j = 0; j < data.products[i].variants.length; j++) {
+      if (!data.products[i].variants[j].status) data.products[i].variants[j].status = 'tersedia';
+    }
+  }
+}
+
+var pendingSave = null;
+
+function dbSave(callback) {
+  if (!ghConfigured()) {
+    showAutosave('error', 'GitHub belum dikonfigurasi');
+    if (callback) callback(false);
+    return;
+  }
+
+  // Batasi 1 request dalam satu waktu
+  if (saveQueue) {
+    if (callback) callback(false);
+    return;
+  }
+  saveQueue = true;
+  showAutosave('saving');
+
+  var json = JSON.stringify(data, null, 2);
+  ghPutFile(GH.pathData, json, 'Update data.json')
+    .then(function() {
+      saveQueue = false;
+      showAutosave();
+      if (callback) callback(true);
+    })
+    .catch(function(err) {
+      saveQueue = false;
+      console.error(err);
+      showAutosave('error', err.message);
+      if (callback) callback(false);
+    });
+}
+
+function autoSave() { dbSave(); }
+function autoSaveProfile() {
+  data.settings.name = document.getElementById('cfgName').value.trim();
+  data.settings.desc = document.getElementById('cfgDesc').value.trim();
+  data.settings.wa = document.getElementById('cfgWA').value.trim();
+  data.settings.tiktok = cleanUsername(document.getElementById('cfgTiktok').value);
+  data.settings.ig = cleanUsername(document.getElementById('cfgIg').value);
+  autoSave();
+}
+
+// ================= UTIL =================
+function compressImage(file, maxDim, quality, callback) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var w = img.width, h = img.height;
+      if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
+      else if (h > w && h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
+      var canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = function() { toast('❌ Gagal baca gambar'); };
+    img.src = e.target.result;
+  };
+  reader.onerror = function() { toast('❌ Gagal baca file'); };
+  reader.readAsDataURL(file);
+}
+
+function cleanUsername(input) {
+  if (!input) return '';
+  var v = String(input).trim();
+  v = v.replace(/^https?:\/\/(www\.)?tiktok\.com\/@?/i, '');
+  v = v.replace(/^https?:\/\/(www\.)?instagram\.com\//i, '');
+  v = v.replace(/^@+/, '').replace(/\/+$/, '');
+  v = v.split('?')[0].split('/')[0];
+  return v;
+}
+
+// ================= OVERVIEW =================
+function updateOverview() {
+  var el = function(id) { return document.getElementById(id); };
+  el('overviewProducts').textContent = data.products.length;
+  el('overviewCategories').textContent = data.categories.length;
+  el('overviewReviews').textContent = data.reviews.length;
+  var avail = 0;
+  for (var i = 0; i < data.products.length; i++) {
+    if (getProductStatusSummary(data.products[i]) === 'tersedia') avail++;
+  }
+  el('overviewAvailable').textContent = avail;
+}
+
+// ================= LOAD UI =================
+function load() {
+  dbLoad(function() {
+    document.getElementById('cfgName').value = data.settings.name || '';
+    document.getElementById('cfgDesc').value = data.settings.desc || '';
+    document.getElementById('cfgWA').value = data.settings.wa || '';
+    document.getElementById('cfgTiktok').value = cleanUsername(data.settings.tiktok);
+    document.getElementById('cfgIg').value = cleanUsername(data.settings.ig);
+    if (data.settings.logo) {
+      document.getElementById('cfgLogo').value = data.settings.logo;
+      document.getElementById('logoPreview').src = data.settings.logo;
+      document.getElementById('logoPreviewBox').classList.remove('hidden');
+      document.getElementById('logoBox').classList.add('hidden');
+    }
+    renderCategories();
+    renderProduk();
+    renderReview();
+    document.getElementById('loadingScreen').classList.add('hidden');
+  });
+}
+
+function showTab(t) {
+  var tabs = ['profil','kategori','produk','review'];
+  for (var i = 0; i < tabs.length; i++) {
+    document.getElementById('tab-' + tabs[i]).classList.remove('active');
+    document.getElementById('tabContent-' + tabs[i]).classList.add('hidden');
+  }
+  document.getElementById('tab-' + t).classList.add('active');
+  document.getElementById('tabContent-' + t).classList.remove('hidden');
+}
+
+// ================= PROFIL =================
+function uploadLogo(e) {
+  var f = e.target.files[0];
+  if (!f) return;
+  toast('⏳ Mengompres...');
+  compressImage(f, 400, 0.85, function(result) {
+    data.settings.logo = result;
+    document.getElementById('cfgLogo').value = result;
+    document.getElementById('logoPreview').src = result;
+    document.getElementById('logoPreviewBox').classList.remove('hidden');
+    document.getElementById('logoBox').classList.add('hidden');
+    autoSave();
+    toast('✅ Logo siap (' + Math.round(result.length/1024) + ' KB)');
+  });
+}
+
+function removeLogo() {
+  data.settings.logo = '';
+  document.getElementById('cfgLogo').value = '';
+  document.getElementById('logoFile').value = '';
+  document.getElementById('logoPreviewBox').classList.add('hidden');
+  document.getElementById('logoBox').classList.remove('hidden');
+  autoSave();
+}
+
+// ================= KATEGORI =================
+function addCategory() {
+  var input = document.getElementById('newCat');
+  var name = input.value.trim();
+  if (!name) { toast('❌ Nama kategori wajib'); return; }
+  for (var i = 0; i < data.categories.length; i++) {
+    if (data.categories[i].name.toLowerCase() === name.toLowerCase()) { toast('❌ Kategori sudah ada'); return; }
+  }
+  data.categories.push({ id: 'C' + Date.now(), name: name });
+  autoSave();
+  input.value = '';
+  renderCategories();
+}
+
+function deleteCategory(id) {
+  if (!confirm('Hapus kategori ini?')) return;
+  var nc = [];
+  for (var i = 0; i < data.categories.length; i++) if (data.categories[i].id !== id) nc.push(data.categories[i]);
+  data.categories = nc;
+  for (var i = 0; i < data.products.length; i++) if (data.products[i].categoryId === id) data.products[i].categoryId = '';
+  autoSave();
+  renderCategories();
+  renderProduk();
+}
+
+function renderCategories() {
+  updateOverview();
+  var el = document.getElementById('catList');
+  if (data.categories.length === 0) {
+    el.innerHTML = '<p class="text-xs text-slate-400 italic text-center py-4">Belum ada kategori</p>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < data.categories.length; i++) {
+    var c = data.categories[i];
+    var count = 0;
+    for (var j = 0; j < data.products.length; j++) if (data.products[j].categoryId === c.id) count++;
+    html += '<div class="item-card flex items-center justify-between p-3 mb-2">' +
+      '<div class="flex items-center gap-3">' +
+        '<div class="w-10 h-10 rounded-xl btn-icon flex items-center justify-center"><i class="fas fa-tag"></i></div>' +
+        '<div><p class="font-bold text-slate-800 text-sm">' + c.name + '</p><p class="text-xs text-slate-500">' + count + ' produk</p></div>' +
+      '</div>' +
+      '<button onclick="deleteCategory(\'' + c.id + '\')" class="btn-icon w-10 h-10 rounded-xl"><i class="fas fa-trash"></i></button>' +
+    '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ================= PRODUK =================
+var variantCounter = 0;
+
+function addVariant(name, price, status) {
+  variantCounter++;
+  var id = 'V' + variantCounter + '_' + Date.now();
+  var list = document.getElementById('variantList');
+  var row = document.createElement('div');
+  row.className = 'variant-row';
+  row.dataset.vid = id;
+  var st = status || 'tersedia';
+  row.innerHTML =
+    '<div class="flex gap-2 mb-2">' +
+      '<input type="text" class="variant-input flex-1" placeholder="Nama varian" value="' + (name||'').replace(/"/g,'&quot;') + '" data-field="name">' +
+      '<button type="button" onclick="removeVariant(\'' + id + '\')" class="btn-icon w-9 rounded-lg flex-shrink-0"><i class="fas fa-trash text-xs"></i></button>' +
+    '</div>' +
+    '<div class="flex gap-2 mb-2"><div class="flex-1"><label class="text-xs text-slate-500 mb-0.5 block">Harga</label>' +
+    '<input type="number" class="variant-input w-full" placeholder="0" value="' + (price||'') + '" data-field="price"></div></div>' +
+    '<div><label class="text-xs text-slate-500 mb-0.5 block">Status</label>' +
+    '<select class="variant-input w-full" data-field="status">' +
+      '<option value="tersedia"' + (st==='tersedia'?' selected':'') + '>🟢 Tersedia</option>' +
+      '<option value="po"' + (st==='po'?' selected':'') + '>🟡 Pre-Order</option>' +
+      '<option value="habis"' + (st==='habis'?' selected':'') + '>🔴 Tidak Tersedia</option>' +
+    '</select></div>';
+  list.appendChild(row);
+  updateVariantEmpty();
+}
+
+function removeVariant(id) {
+  var row = document.querySelector('[data-vid="' + id + '"]');
+  if (row) row.remove();
+  updateVariantEmpty();
+}
+
+function updateVariantEmpty() {
+  var count = document.querySelectorAll('#variantList .variant-row').length;
+  document.getElementById('variantEmpty').style.display = count === 0 ? 'block' : 'none';
+}
+
+function collectVariants() {
+  var rows = document.querySelectorAll('#variantList .variant-row');
+  var variants = [];
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var name = row.querySelector('[data-field="name"]').value.trim();
+    var price = parseInt(row.querySelector('[data-field="price"]').value) || 0;
+    var status = row.querySelector('[data-field="status"]').value || 'tersedia';
+    if (name) variants.push({ name: name, price: price, status: status });
+  }
+  return variants;
+}
+
+function getMinPrice(p) {
+  var vs = p.variants || [];
+  if (vs.length > 0) {
+    var min = vs[0].price;
+    for (var i = 1; i < vs.length; i++) if (vs[i].price < min) min = vs[i].price;
+    return min;
+  }
+  return p.price || 0;
+}
+
+function getCategoryName(id) {
+  if (!id) return '';
+  for (var i = 0; i < data.categories.length; i++) if (data.categories[i].id === id) return data.categories[i].name;
+  return '';
+}
+
+function statusBadge(status) {
+  if (status === 'habis') return '<span class="status-badge status-habis"><i class="fas fa-times-circle"></i> Tidak Tersedia</span>';
+  if (status === 'po') return '<span class="status-badge status-po"><i class="fas fa-clock"></i> Pre-Order</span>';
+  return '<span class="status-badge status-tersedia"><i class="fas fa-check-circle"></i> Tersedia</span>';
+}
+
+function getProductStatusSummary(p) {
+  var vs = p.variants || [];
+  if (vs.length === 0) return 'tersedia';
+  var ht=false, hp=false;
+  for (var i = 0; i < vs.length; i++) {
+    var s = vs[i].status || 'tersedia';
+    if (s === 'tersedia') ht = true;
+    else if (s === 'po') hp = true;
+  }
+  if (ht) return 'tersedia';
+  if (hp) return 'po';
+  return 'habis';
+}
+
+function renderProduk() {
+  updateOverview();
+  var el = document.getElementById('listProduk');
+  if (data.products.length === 0) {
+    el.innerHTML = '<div class="text-center py-10"><i class="fas fa-box-open text-4xl text-slate-300 mb-3"></i><p class="text-slate-400 italic text-sm">Belum ada produk</p></div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < data.products.length; i++) {
+    var p = data.products[i];
+    var img = p.image ? '<img src="' + p.image + '" class="w-full h-full object-contain p-1">' : '<i class="fas fa-image text-slate-400"></i>';
+    var varCount = (p.variants && p.variants.length) || 0;
+    var varBadge = varCount > 0 ? '<span class="bg-slate-100 text-slate-700 text-xs font-semibold px-2 py-0.5 rounded-full ml-1">' + varCount + ' varian</span>' : '';
+    var catName = getCategoryName(p.categoryId);
+    var catBadge = catName ? '<span class="bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-0.5 rounded-full ml-1"><i class="fas fa-tag"></i> ' + catName + '</span>' : '';
+    var summary = getProductStatusSummary(p);
+    var minPrice = getMinPrice(p);
+    html += '<div class="item-card flex items-center justify-between p-3">' +
+      '<div class="flex items-center gap-3 min-w-0 flex-1">' +
+        '<div class="w-16 h-16 rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center flex-shrink-0 shadow-sm border border-slate-100">' + img + '</div>' +
+        '<div class="min-w-0 flex-1"><p class="font-bold text-slate-800 text-sm truncate">' + p.name + '</p>' +
+        '<div class="mt-1">' + statusBadge(summary) + '</div>' +
+        '<div class="mt-1">' + catBadge + varBadge + '</div>' +
+        '<p class="text-xs text-slate-600 font-bold mt-1">Mulai dari Rp ' + Number(minPrice).toLocaleString('id-ID') + '</p></div>' +
+      '</div>' +
+      '<div class="flex gap-2 flex-shrink-0">' +
+        '<button onclick="editProduct(\'' + p.id + '\')" class="btn-icon w-10 h-10 rounded-xl"><i class="fas fa-edit"></i></button>' +
+        '<button onclick="delProduct(\'' + p.id + '\')" class="btn-icon w-10 h-10 rounded-xl"><i class="fas fa-trash"></i></button>' +
+      '</div></div>';
+  }
+  el.innerHTML = html;
+}
+
+function renderCategoryDropdown(selectedId) {
+  var sel = document.getElementById('pCategory');
+  var html = '<option value="">-- Tanpa Kategori --</option>';
+  for (var i = 0; i < data.categories.length; i++) {
+    var c = data.categories[i];
+    html += '<option value="' + c.id + '"' + (c.id === selectedId ? ' selected' : '') + '>' + c.name + '</option>';
+  }
+  sel.innerHTML = html;
+}
+
+function openProduct() {
+  document.getElementById('productTitle').innerText = 'Tambah Produk';
+  document.getElementById('pId').value = '';
+  document.getElementById('pName').value = '';
+  document.getElementById('pDesc').value = '';
+  document.getElementById('pImg').value = '';
+  document.getElementById('pFile').value = '';
+  document.getElementById('variantList').innerHTML = '';
+  renderCategoryDropdown('');
+  updateVariantEmpty();
+  document.getElementById('previewBox').classList.add('hidden');
+  document.getElementById('uploadBox').classList.remove('hidden');
+  document.getElementById('modalProduct').classList.remove('hidden');
+}
+
+function closeProduct() { document.getElementById('modalProduct').classList.add('hidden'); }
+
+function editProduct(id) {
+  var p = null;
+  for (var i = 0; i < data.products.length; i++) if (data.products[i].id === id) { p = data.products[i]; break; }
+  if (!p) return;
+  document.getElementById('productTitle').innerText = 'Edit Produk';
+  document.getElementById('pId').value = p.id;
+  document.getElementById('pName').value = p.name;
+  document.getElementById('pDesc').value = p.description || '';
+  document.getElementById('pImg').value = p.image || '';
+  renderCategoryDropdown(p.categoryId || '');
+  if (p.image) {
+    document.getElementById('previewImg').src = p.image;
+    document.getElementById('previewBox').classList.remove('hidden');
+    document.getElementById('uploadBox').classList.add('hidden');
+  } else {
+    document.getElementById('previewBox').classList.add('hidden');
+    document.getElementById('uploadBox').classList.remove('hidden');
+  }
+  document.getElementById('variantList').innerHTML = '';
+  var variants = p.variants || [];
+  for (var i = 0; i < variants.length; i++) addVariant(variants[i].name, variants[i].price, variants[i].status || 'tersedia');
+  updateVariantEmpty();
+  document.getElementById('modalProduct').classList.remove('hidden');
+}
+
+function uploadImage(e) {
+  var f = e.target.files[0];
+  if (!f) return;
+  toast('⏳ Mengompres...');
+  compressImage(f, 800, 0.75, function(result) {
+    document.getElementById('pImg').value = result;
+    document.getElementById('previewImg').src = result;
+    document.getElementById('previewBox').classList.remove('hidden');
+    document.getElementById('uploadBox').classList.add('hidden');
+    toast('✅ Gambar siap (' + Math.round(result.length/1024) + ' KB)');
+  });
+}
+
+function removeImg() {
+  document.getElementById('pImg').value = '';
+  document.getElementById('pFile').value = '';
+  document.getElementById('previewBox').classList.add('hidden');
+  document.getElementById('uploadBox').classList.remove('hidden');
+}
+
+function saveProduct() {
+  var id = document.getElementById('pId').value;
+  var name = document.getElementById('pName').value.trim();
+  var img = document.getElementById('pImg').value;
+  var desc = document.getElementById('pDesc').value.trim();
+  var catId = document.getElementById('pCategory').value;
+  var variants = collectVariants();
+
+  if (!name) { toast('❌ Nama produk wajib'); return; }
+  if (variants.length === 0) { toast('❌ Tambah minimal 1 varian'); return; }
+
+  var minPrice = variants[0].price;
+  for (var i = 1; i < variants.length; i++) if (variants[i].price < minPrice) minPrice = variants[i].price;
+
+  if (id) {
+    for (var i = 0; i < data.products.length; i++) {
+      if (data.products[i].id === id) {
+        data.products[i].name = name;
+        data.products[i].price = minPrice;
+        data.products[i].image = img;
+        data.products[i].description = desc;
+        data.products[i].categoryId = catId;
+        data.products[i].variants = variants;
+        break;
+      }
+    }
+  } else {
+    data.products.push({
+      id: 'P' + Date.now(), name: name, price: minPrice,
+      image: img, description: desc, categoryId: catId, variants: variants
+    });
+  }
+  dbSave(function(ok) {
+    if (ok) { closeProduct(); renderProduk(); renderCategories(); }
+  });
+}
+
+function delProduct(id) {
+  if (!confirm('Hapus produk?')) return;
+  var np = [], nr = [];
+  for (var i = 0; i < data.products.length; i++) if (data.products[i].id !== id) np.push(data.products[i]);
+  for (var i = 0; i < data.reviews.length; i++) if (data.reviews[i].productId !== id) nr.push(data.reviews[i]);
+  data.products = np; data.reviews = nr;
+  autoSave();
+  renderProduk(); renderReview(); renderCategories();
+}
+
+// ================= REVIEW =================
+function renderReview() {
+  updateOverview();
+  var el = document.getElementById('listReview');
+  if (data.reviews.length === 0) {
+    el.innerHTML = '<div class="text-center py-10"><i class="fas fa-comment-slash text-4xl text-slate-300 mb-3"></i><p class="text-slate-400 italic text-sm">Belum ada review</p></div>';
+    return;
+  }
+  var html = '';
+  for (var i = data.reviews.length - 1; i >= 0; i--) {
+    var r = data.reviews[i];
+    var prodName = 'Produk dihapus';
+    for (var j = 0; j < data.products.length; j++) if (data.products[j].id === r.productId) { prodName = data.products[j].name; break; }
+    var thumb = r.image ? '<img src="' + r.image + '" class="w-16 h-16 object-cover rounded-xl mt-2 border-2 border-white shadow-md">' : '';
+    html += '<div class="item-card p-4">' +
+      '<div class="flex justify-between items-start gap-2">' +
+        '<div class="min-w-0 flex-1"><p class="font-bold text-slate-800 text-sm">' + r.name + '</p>' +
+        '<p class="text-xs text-slate-500 truncate mb-1"><i class="fas fa-box text-slate-400 mr-1"></i>' + prodName + '</p>' +
+        '<p class="text-amber-500 text-sm">' + '★'.repeat(r.rating) + '☆'.repeat(5-r.rating) + '</p></div>' +
+        '<button onclick="delReview(' + r.id + ')" class="btn-icon w-9 h-9 rounded-xl"><i class="fas fa-trash text-xs"></i></button>' +
+      '</div>' +
+      '<p class="text-sm text-slate-600 mt-2 leading-relaxed">' + r.text + '</p>' + thumb +
+    '</div>';
+  }
+  el.innerHTML = html;
+}
+
+function openReview() {
+  if (data.products.length === 0) { toast('❌ Tambah produk dulu'); return; }
+  var opts = '';
+  for (var i = 0; i < data.products.length; i++) opts += '<option value="' + data.products[i].id + '">' + data.products[i].name + '</option>';
+  document.getElementById('rProduct').innerHTML = opts;
+  document.getElementById('rName').value = '';
+  document.getElementById('rRating').value = '5';
+  document.getElementById('rText').value = '';
+  document.getElementById('rImg').value = '';
+  document.getElementById('rFile').value = '';
+  document.getElementById('rPreviewBox').classList.add('hidden');
+  document.getElementById('rUploadBox').classList.remove('hidden');
+  document.getElementById('modalReview').classList.remove('hidden');
+}
+
+function closeReview() { document.getElementById('modalReview').classList.add('hidden'); }
+
+function uploadReviewImg(e) {
+  var f = e.target.files[0];
+  if (!f) return;
+  toast('⏳ Mengompres foto...');
+  compressImage(f, 700, 0.7, function(result) {
+    document.getElementById('rImg').value = result;
+    document.getElementById('rPreviewImg').src = result;
+    document.getElementById('rPreviewBox').classList.remove('hidden');
+    document.getElementById('rUploadBox').classList.add('hidden');
+    toast('✅ Foto siap (' + Math.round(result.length/1024) + ' KB)');
+  });
+}
+
+function removeReviewImg() {
+  document.getElementById('rImg').value = '';
+  document.getElementById('rFile').value = '';
+  document.getElementById('rPreviewBox').classList.add('hidden');
+  document.getElementById('rUploadBox').classList.remove('hidden');
+}
+
+function saveReview() {
+  var pid = document.getElementById('rProduct').value;
+  var name = document.getElementById('rName').value.trim();
+  var rating = parseInt(document.getElementById('rRating').value);
+  var text = document.getElementById('rText').value.trim();
+  var img = document.getElementById('rImg').value;
+  if (!name || !text) { toast('❌ Nama & isi wajib'); return; }
+  data.reviews.push({
+    id: Date.now(), productId: pid, name: name, rating: rating,
+    text: text, image: img, date: new Date().toISOString()
+  });
+  dbSave(function(ok) { if (ok) { closeReview(); renderReview(); } });
+}
+
+function delReview(id) {
+  if (!confirm('Hapus review?')) return;
+  var nr = [];
+  for (var i = 0; i < data.reviews.length; i++) if (data.reviews[i].id !== id) nr.push(data.reviews[i]);
+  data.reviews = nr;
+  autoSave();
+  renderReview();
+}
+
+// ================= EXPORT / IMPORT / RESET =================
+function exportData() {
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'backup-' + Date.now() + '.json';
+  a.click();
+  toast('✅ Backup terunduh');
+}
+
+function importData(e) {
+  var f = e.target.files[0];
+  if (!f) return;
+  var rd = new FileReader();
+  rd.onload = function(ev) {
+    try {
+      var d = JSON.parse(ev.target.result);
+      if (!d.products || !d.reviews) { toast('❌ File tidak valid'); return; }
+      data = d;
+      normalizeData();
+      dbSave(function(ok) { if (ok) { toast('✅ Data ter-import'); load(); } });
+    } catch(err) { toast('❌ File rusak'); }
+  };
+  rd.readAsText(f);
+}
+
+function resetAll() {
+  if (!confirm('Reset semua data? Ini akan mengosongkan data.json di GitHub.')) return;
+  if (!confirm('Yakin? Tidak bisa dibatalkan.')) return;
+  data = {
+    settings: { name:'', wa:'', desc:'', tiktok:'', ig:'', logo:'' },
+    categories: [], products: [], reviews: []
+  };
+  dbSave(function(ok) { if (ok) load(); });
+}
+
+function preview() {
+  if (GH.indexUrl) {
+    window.open(GH.indexUrl, '_blank');
+  } else {
+    toast('⚠️ Isi URL Index di pengaturan GitHub dulu');
+    openGhSettings();
+  }
+}
+
+// ================= GITHUB SETTINGS =================
+function openGhSettings() {
+  document.getElementById('ghToken').value = GH.token;
+  document.getElementById('ghOwner').value = GH.owner;
+  document.getElementById('ghRepo').value = GH.repo;
+  document.getElementById('ghBranch').value = GH.branch;
+  document.getElementById('ghPathData').value = GH.pathData;
+  document.getElementById('ghIndexUrl').value = GH.indexUrl;
+  document.getElementById('modalGh').classList.remove('hidden');
+}
+
+function closeGhSettings() { document.getElementById('modalGh').classList.add('hidden'); }
+
+function saveGhSettings() {
+  GH.token = document.getElementById('ghToken').value.trim();
+  GH.owner = document.getElementById('ghOwner').value.trim();
+  GH.repo = document.getElementById('ghRepo').value.trim();
+  GH.branch = document.getElementById('ghBranch').value.trim() || 'main';
+  GH.pathData = document.getElementById('ghPathData').value.trim() || 'data.json';
+  GH.indexUrl = document.getElementById('ghIndexUrl').value.trim();
+
+  localStorage.setItem('gh_token', GH.token);
+  localStorage.setItem('gh_owner', GH.owner);
+  localStorage.setItem('gh_repo', GH.repo);
+  localStorage.setItem('gh_branch', GH.branch);
+  localStorage.setItem('gh_pathData', GH.pathData);
+  localStorage.setItem('gh_indexUrl', GH.indexUrl);
+
+  closeGhSettings();
+  toast('✅ Konfigurasi disimpan. Memuat data...');
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  load();
+}
+
+// ================= START =================
+load();
+</script>
+</body>
+</html>
